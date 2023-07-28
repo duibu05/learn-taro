@@ -3,6 +3,21 @@ import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 import devConfig from './dev'
 import prodConfig from './prod'
 
+/**
+ * @typedef { import("@tarojs/plugin-mini-ci").CIOptions } CIOptions
+ * @type {CIOptions}
+ */
+const CIPluginOpt = {
+  tt: {
+    email: '字节小程序邮箱',
+    password: '字节小程序密码',
+  },
+  // 版本号
+  version: '1.0.0',
+  // 版本发布描述
+  desc: '版本描述',
+}
+
 // https://taro-docs.jd.com/docs/next/config#defineconfig-辅助函数
 export default defineConfig(async (merge, { command, mode }) => {
   const baseConfig: UserConfigExport = {
@@ -16,8 +31,8 @@ export default defineConfig(async (merge, { command, mode }) => {
       828: 1.81 / 2
     },
     sourceRoot: 'src',
-    outputRoot: 'dist',
-    plugins: [],
+    outputRoot: `dist/${process.env.TARO_ENV}`,
+    plugins: [['@tarojs/plugin-mini-ci', CIPluginOpt]],
     defineConstants: {
     },
     copy: {
